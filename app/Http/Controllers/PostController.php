@@ -18,6 +18,10 @@ class PostController extends Controller
     public function index()
     {
         //
+        $all_posts = $this->post->latest()->get();
+
+        return view('posts.index')
+                ->with('all_posts', $all_posts);
     }
 
     /**

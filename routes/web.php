@@ -9,7 +9,7 @@ Auth::routes();
 
 // route controls users from going to homepage without logging in
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+    Route::get('/', [PostController::class, 'index'])->name('index');
 
     Route::group(["as"=> "post.", "prefix"=>"post"], function () {
         Route::get('/create', [PostController::class, 'create'])->name('create');
