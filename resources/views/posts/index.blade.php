@@ -8,18 +8,18 @@
 @section('content')
     @forelse ($all_posts as $post)
         <div class="p-3 border rounded-1">
-            <a href="" class="h5">
+            <a href="{{route('post.show',$post)}}" class="h5">
                 {{ $post->title }}
             </a>
             <p class="text-muted">{{ $post->user->name }}</p>
             <p>{{ $post->body }}</p>
             @if ($post->user->id === Auth::id())
                 <div class="text-end p-0">
-                    <a href="#" class="btn btn-sm btn-outline-warning">
+                    <a href="{{route('post.edit',$post)}}" class="btn btn-sm btn-outline-warning">
                         <i class="fa-regular fa-pen-to-square"></i>
 
                     </a>
-                    <form action="#" method="post" class="d-inline">
+                    <form action="{{route('post.destroy',$post)}}" method="post" class="d-inline">
                         @csrf
                         @method('DELETE')
 

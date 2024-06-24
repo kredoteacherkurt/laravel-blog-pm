@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     const LOCAL_STORAGE_FOLDER = 'public/images/';
@@ -63,7 +64,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-
+        return view('posts.show')->with('post', $post);
     }
 
     /**
@@ -72,6 +73,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
+
+        return view('posts.edit')->with('post', $post);
     }
 
     /**
@@ -80,6 +83,23 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+
+        $post->title = $request->title;
+        $post->body = $request->body;
+        if($request->image){
+            $this->deleteImage($post);
+            $post->image = $this->saveImage($request);
+        }
+        $post->save();
+
+        return redirect()->route('index');
+    }
+    public function deleteImage($post){
+        $image_path = self::LOCAL_STORAGE_FOLDER.$post->image;
+
+        if(Storage::exists($image_path)){
+            Storage::delete($image_path);
+        }
     }
 
     /**
@@ -88,5 +108,8 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+        $post->delete();
+
+        return redirect()->route('index');
     }
 }
